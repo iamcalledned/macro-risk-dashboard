@@ -1,5 +1,29 @@
 import streamlit as st
 
+
+import streamlit as st
+import pandas as pd
+import numpy as np
+import datetime
+
+# Must be the very first Streamlit command
+st.set_page_config(layout="wide", page_title="Global Market Stress Monitor")
+
+def show_line_chart(title, data_source, alerts=[]):
+    st.subheader(title)
+
+    # Simulate data for now
+    dates = pd.date_range(end=datetime.datetime.today(), periods=60)
+    if isinstance(data_source, list):
+        data = pd.DataFrame({
+            src: np.random.randn(len(dates)).cumsum() for src in data_source
+        }, index=dates)
+    else:
+        data = pd.DataFrame({data_source: np.random.randn(len(dates)).cumsum()}, index=dates)
+
+    st.line_chart(data)
+
+
 def show_dashboard():
 
 
@@ -56,3 +80,4 @@ def show_dashboard():
         st.line_chart(data=None)  # Non-Revolving
         st.bar_chart(data=None)  # Auto Loan
         st.text("Macro Shocks Timeline: Coming soon...")  # Event log
+
