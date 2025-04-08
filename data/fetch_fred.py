@@ -112,3 +112,14 @@ def get_gold():
     data = fred.get_series("IR14270").dropna()
     data.name = "Gold (USD/oz)"
     return data
+def get_em_fx():
+    """Trade-Weighted USD Index vs EM FX (FRED Proxy)"""
+    data = fred.get_series("DTWEXEMEGS").dropna()
+    data.name = "USD vs EM FX (TW)"
+    return data
+
+def get_china_loans_yoy():
+    """Proxy for China Credit Impulse — China Bank Loans YoY Growth"""
+    data = fred.get_series("CHNBLYOY").dropna()
+    data.name = "China Loan Growth YoY"
+    return data
