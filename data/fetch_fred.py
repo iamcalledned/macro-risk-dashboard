@@ -82,3 +82,18 @@ def get_auto_loan_rate():
     data = fred.get_series("TERMCBAUTO48NS").dropna()
     data.name = "Auto Loan 60-Month Rate"
     return data
+
+def get_baml_hy():
+    data = fred.get_series("BAMLH0A0HYM2").dropna()
+    data.name = "BAML HY OAS"
+    return data
+
+def get_baml_ig():
+    data = fred.get_series("BAMLC0A0CM").dropna()
+    data.name = "BAML IG OAS"
+    return data
+
+def get_sofr():
+    data = fred.get_series("SOFR").dropna()
+    data.name = "SOFR"
+    return data
