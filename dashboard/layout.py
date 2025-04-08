@@ -1,8 +1,13 @@
 import streamlit as st
+import pandas as pd
+import numpy as np
+
+def fake_timeseries(title, days=60):
+    dates = pd.date_range(end=pd.Timestamp.today(), periods=days)
+    data = np.cumsum(np.random.randn(days)) + 100
+    return pd.DataFrame({title: data}, index=dates)
 
 def show_dashboard():
-    
-
     st.title("📊 Global Market Stress Monitor")
 
     tabs = st.tabs([
@@ -13,46 +18,41 @@ def show_dashboard():
         "Recession Confirmation"
     ])
 
-    # --- Tab 1: Market Stress ---
     with tabs[0]:
-        st.header("Market Stress")
-        st.line_chart(data=None, height=250)  # Placeholder for S&P 500
-        st.line_chart(data=None, height=250)  # Placeholder for VIX
-        st.line_chart(data=None, height=250)  # Put/Call Ratio
-        st.line_chart(data=None, height=250)  # Advance/Decline
+        st.header("📉 Market Stress")
+        st.line_chart(fake_timeseries("S&P 500"))
+        st.line_chart(fake_timeseries("VIX Index"))
+        st.line_chart(fake_timeseries("Put/Call Ratio"))
+        st.line_chart(fake_timeseries("Advance/Decline"))
 
-    # --- Tab 2: Credit & Liquidity ---
     with tabs[1]:
-        st.header("Credit & Liquidity")
-        st.line_chart(data=None)  # CDX IG
-        st.line_chart(data=None)  # CDX HY
-        st.metric("HY-IG Spread Delta", value="Loading...")  # Placeholder delta
-        st.line_chart(data=None)  # SOFR
-        st.line_chart(data=None)  # EUR/USD Cross Basis
-        st.line_chart(data=None)  # GS Risk Appetite
+        st.header("💳 Credit & Liquidity")
+        st.line_chart(fake_timeseries("CDX IG"))
+        st.line_chart(fake_timeseries("CDX HY"))
+        st.metric("HY-IG Spread Delta", value="87bps", delta="+4bps")
+        st.line_chart(fake_timeseries("SOFR 3Y Spread"))
+        st.line_chart(fake_timeseries("EUR/USD Cross Basis"))
+        st.line_chart(fake_timeseries("GS RAI"))
 
-    # --- Tab 3: Macro & Fed Watch ---
     with tabs[2]:
-        st.header("Macro & Fed Watch")
-        st.line_chart(data=None)  # Fed Funds
-        st.line_chart(data=None)  # Yield Curve
-        st.line_chart(data=None)  # 5Y5Y BE
-        st.bar_chart(data=None)  # FOMC Sentiment
-        st.metric("CPI (YoY)", value="---")
+        st.header("🏦 Macro & Fed Watch")
+        st.line_chart(fake_timeseries("Fed Funds 1Y Forward"))
+        st.line_chart(fake_timeseries("10Y - 2Y Spread"))
+        st.line_chart(fake_timeseries("5Y5Y Inflation"))
+        st.bar_chart(np.random.rand(5))  # Placeholder sentiment bar
+        st.metric("CPI YoY", value="3.6%", delta="-0.1%")
 
-    # --- Tab 4: Global Panic Indicators ---
     with tabs[3]:
-        st.header("Global Panic Indicators")
-        st.line_chart(data=None)  # DXY
-        st.line_chart(data=None)  # EM FX
-        st.line_chart(data=None)  # China Credit
-        st.line_chart(data=None)  # Oil/Gas
-        st.line_chart(data=None)  # Gold/BTC
+        st.header("🌎 Global Panic Indicators")
+        st.line_chart(fake_timeseries("DXY"))
+        st.line_chart(fake_timeseries("EM FX"))
+        st.line_chart(fake_timeseries("China Credit Impulse"))
+        st.line_chart(fake_timeseries("Gasoline Prices"))
+        st.line_chart(fake_timeseries("Gold & BTC"))
 
-    # --- Tab 5: Recession Confirmation ---
     with tabs[4]:
-        st.header("Recession Confirmation")
-        st.line_chart(data=None)  # Consumer Credit
-        st.line_chart(data=None)  # Non-Revolving
-        st.bar_chart(data=None)  # Auto Loan
-        st.text("Macro Shocks Timeline: Coming soon...")  # Event log
+        st.header("⚠️ Recession Confirmation")
+        st.line_chart(fake_timeseries("Consumer Credit"))
+        st.line_chart(fake_timeseries("Non-Revolving Credit"))
+        st.bar_chart(np.random.rand(7))  # Placeholder loan rates
+        st.text("📅 Macro Shock Timeline (placeholder)")
