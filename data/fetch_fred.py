@@ -123,3 +123,8 @@ def get_china_loans_yoy():
     data = fred.get_series("CHNBLYOY").dropna()
     data.name = "China Loan Growth YoY"
     return data
+def get_china_industrial_prod():
+    """China Industrial Production YoY (%)"""
+    data = fred.get_series("IPMAN").dropna()
+    data.name = "China Industrial Production YoY"
+    return data

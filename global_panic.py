@@ -10,7 +10,8 @@ def global_panic_tab():
     with st.spinner("Loading real data..."):
         dxy = get_dxy().last('60D')
         em_fx = get_em_fx().last('60D')
-        china_credit = get_china_loans_yoy().last('60D')
+        from data.fetch_fred import get_china_industrial_prod
+        china_credit = get_china_industrial_prod().last('60D')
         wti = get_wti().last('60D')
         gas = get_gasoline().last('60D')
         gold = get_gold().last('60D')
@@ -31,7 +32,7 @@ def global_panic_tab():
     st.subheader("🌍 USD vs EM FX (Trade-Weighted)")
     plot_time_series(em_fx, em_fx.name)
 
-    st.subheader("🇨🇳 China Loan Growth (YoY)")
+    st.subheader("🇨🇳 China Industrial Production YoY")
     plot_time_series(china_credit, china_credit.name)
 
     st.subheader("🛢️ WTI Crude & ⛽ Gasoline")
