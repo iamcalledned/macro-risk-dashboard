@@ -97,3 +97,18 @@ def get_sofr():
     data = fred.get_series("SOFR").dropna()
     data.name = "SOFR"
     return data
+
+def get_wti():
+    data = fred.get_series("DCOILWTICO").dropna()
+    data.name = "WTI Crude"
+    return data
+
+def get_gasoline():
+    data = fred.get_series("GASREGCOVW").dropna()
+    data.name = "Gasoline"
+    return data
+
+def get_gold():
+    data = fred.get_series("IR14270").dropna()
+    data.name = "Gold (USD/oz)"
+    return data
