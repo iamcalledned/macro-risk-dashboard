@@ -1,45 +1,41 @@
 import streamlit as st
-from data.fetch_fred import get_dxy, get_wti, get_gasoline, get_gold
+from data.fetch_fred import get_dxy, get_wti, get_gasoline, get_gold, get_em_fx, get_china_loans_yoy
 from dashboard.plots import plot_time_series
-import pandas as pd
-import numpy as np
+from data.fetch_alt import get_btc_usd  # You may need to create this if it’s in a separate file
 
 def global_panic_tab():
     st.header("🌎 Global Panic Indicators")
 
-    # Fetch data
-    dxy = get_dxy().last('60D')
-    wti = get_wti().last('60D')
-    gas = get_gasoline().last('60D')
-    gold = get_gold().last('60D')
+    # Fetch all real data
+    with st.spinner("Loading real data..."):
+        dxy = get_dxy().last('60D')
+        em_fx = get_em_fx().last('60D')
+        china_credit = get_china_loans_yoy().last('60D')
+        wti = get_wti().last('60D')
+        gas = get_gasoline().last('60D')
+        gold = get_gold().last('60D')
+        btc = get_btc_usd().last('60D')
 
-    # Simulated placeholders
-    em_fx = pd.Series(np.cumsum(np.random.randn(60)) + 100, 
-                      index=dxy.index, name="EM FX Index (Simulated)")
-    china_credit = pd.Series(np.cumsum(np.random.randn(60)), 
-                             index=dxy.index, name="China Credit Impulse (Simulated)")
-    btc = pd.Series(np.cumsum(np.random.randn(60)*1000) + 30000, 
-                    index=dxy.index, name="BTC/USD (Simulated)")
-
-    # --- Alerts ---
+    # Alerts
     if gas.iloc[-1] < 3:
-        st.warning("⛽️ Gasoline below $3 — consumer pressure point.")
-
+        st.warning("⛽ Gasoline < $3 — consumer pressure alert.")
     if gold.iloc[-1] > 2100:
-        st.info("🥇 Gold > $2100 — flight to safety underway.")
+        st.info("🥇 Gold > $2100 — flight to safety activated.")
+    if dxy.iloc[-1] > 105:
+        st.warning("💵 DXY above 105 — dollar strength squeeze risk.")
 
-    # --- Charts ---
-    st.subheader("💵 DXY (Dollar Index)")
-    plot_time_series(dxy, "US Dollar Index (DXY)", alert_level=105)
+    # Charts
+    st.subheader("💵 DXY (US Dollar Index)")
+    plot_time_series(dxy, dxy.name, alert_level=105)
 
-    st.subheader("🌍 EM FX Index (Simulated)")
+    st.subheader("🌍 USD vs EM FX (Trade-Weighted)")
     plot_time_series(em_fx, em_fx.name)
 
-    st.subheader("🇨🇳 China Credit Impulse (Simulated)")
+    st.subheader("🇨🇳 China Loan Growth (YoY)")
     plot_time_series(china_credit, china_credit.name)
 
-    st.subheader("🛢️ WTI Crude & ⛽ Gasoline Prices")
-    plot_time_series(pd.concat([wti, gas], axis=1), "Oil vs Gasoline", alert_level=None)
+    st.subheader("🛢️ WTI Crude & ⛽ Gasoline")
+    plot_time_series(wti.to_frame().join(gas), "WTI vs Gasoline")
 
-    st.subheader("🪙 Gold & Bitcoin (Simulated BTC)")
-    plot_time_series(pd.concat([gold, btc], axis=1), "Gold & BTC", alert_level=None)
+    st.subheader("🥇 Gold & ₿ Bitcoin")
+    plot_time_series(gold.to_frame().join(btc), "Gold & BTC")
