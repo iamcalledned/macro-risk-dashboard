@@ -6,8 +6,6 @@ import pandas as pd
 import numpy as np
 import datetime
 
-# Must be the very first Streamlit command
-st.set_page_config(layout="wide", page_title="Global Market Stress Monitor")
 
 def show_line_chart(title, data_source, alerts=[]):
     st.subheader(title)
