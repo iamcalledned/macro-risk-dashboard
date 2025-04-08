@@ -33,3 +33,52 @@ def get_dxy():
     data = fred.get_series("DTWEXBGS").dropna()
     data.name = "DXY"
     return data
+
+def get_fed_funds():
+    data = fred.get_series("FEDFUNDS").dropna()
+    data.name = "Fed Funds Rate"
+    return data
+
+def get_cpi_yoy():
+    data = fred.get_series("CPALTT01USM657N").dropna()
+    data.name = "CPI YoY"
+    return data
+
+def get_5y5y_breakeven():
+    data = fred.get_series("T5YIFR").dropna()
+    data.name = "5Y5Y Inflation Breakeven"
+    return data
+
+def get_sofr():
+    data = fred.get_series("SOFR").dropna()
+    data.name = "SOFR Rate"
+    return data
+
+def get_10y3m_spread():
+    ten = fred.get_series("GS10")
+    three = fred.get_series("TB3MS")
+    spread = ten - three
+    spread.name = "10Y–3M Spread"
+    return spread.dropna()
+
+def get_10y2y_spread():
+    ten = fred.get_series("GS10")
+    two = fred.get_series("GS2")
+    spread = ten - two
+    spread.name = "10Y–2Y Spread"
+    return spread.dropna()
+
+def get_consumer_credit():
+    data = fred.get_series("TOTALSL").dropna()
+    data.name = "Consumer Credit Total"
+    return data
+
+def get_nonrevolving_credit():
+    data = fred.get_series("NONREVSL").dropna()
+    data.name = "Non-Revolving Credit"
+    return data
+
+def get_auto_loan_rate():
+    data = fred.get_series("TERMCBAUTO48NS").dropna()
+    data.name = "Auto Loan 60-Month Rate"
+    return data
