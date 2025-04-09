@@ -1,4 +1,19 @@
 import streamlit as st
+from dashboard.overview import show_main_dashboard
+
+tab = st.sidebar.radio("Select a Dashboard", [
+    "Overview",
+    "Market Stress",
+    "Credit & Liquidity",
+    "Macro & Fed Watch",
+    "Global Panic Indicators",
+    "Recession Confirmation"
+])
+
+if tab == "Overview":
+    show_main_dashboard()
+# (rest stays the same)
+
 
 # Must come BEFORE any other Streamlit command
 st.set_page_config(
