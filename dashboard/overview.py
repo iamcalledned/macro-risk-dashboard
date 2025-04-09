@@ -15,28 +15,26 @@ from data.fetch_alt import get_sp500  # New function you'll want in fetch_alt.py
 
 def show_main_dashboard():
     # Header
-    st.markdown("""
+    st.markdown(f"""
         <style>
-            .main-header {
+            .main-header {{
                 background-color: #0e1117;
                 color: white;
                 padding: 1rem 2rem;
                 font-size: 1.8rem;
                 font-weight: 700;
                 border-bottom: 2px solid #1f232e;
-            }
-            .sub-header {
+            }}
+            .sub-header {{
                 font-size: 1rem;
                 color: #999;
                 margin-top: -1rem;
                 margin-bottom: 1.5rem;
-            }
+            }}
         </style>
         <div class="main-header">📈 Global Market Stress Monitor</div>
-        <div class="sub-header">A real-time dashboard for macro chaos. Updated: {}
-        </div>
-    """.format(datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")), unsafe_allow_html=True)
-
+        <div class="sub-header">A real-time dashboard for macro chaos. Updated: {datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")}</div>
+    """, unsafe_allow_html=True)
     # --- Pull Live Data ---
     try:
         vix = get_vix().last('2D')
