@@ -54,7 +54,10 @@ def show_main_dashboard():
         st.markdown("### 🔍 Key Market Metrics")
         col1, col2, col3, col4, col5 = st.columns(5)
         col1.metric("VIX", f"{vix.iloc[-1]:.2f}", f"{vix.iloc[-1] - vix.iloc[-2]:+.2f}")
-        col2.metric("S&P 500", f"{spx.iloc[-1]:,.0f}", f"{spx.iloc[-1] - spx.iloc[-2]:+.0f}")
+        if spx is not None and len(spx) >= 2:
+            col2.metric("S&P 500", f"{spx.iloc[-1]:,.0f}", f"{spx.iloc[-1] - spx.iloc[-2]:+.0f}")
+        else:
+            col2.metric("S&P 500", "N/A", "No data")
         col3.metric("DXY", f"{dxy.iloc[-1]:.2f}", f"{dxy.iloc[-1] - dxy.iloc[-2]:+.2f}")
         col4.metric("HY–IG", f"{hy_ig_spread:.1f} bps", f"{hy_ig_delta:.1f}")
         col5.metric("Fed Funds", f"{fed_funds.iloc[-1]:.2f}%", f"{fed_funds.iloc[-1] - fed_funds.iloc[-2]:+.2f}%")
