@@ -1,6 +1,7 @@
 import streamlit as st
 from datetime import datetime
 from streamlit.components.v1 import html
+import pandas as pd
 
 from data.fetch_fred import (
     get_vix,
