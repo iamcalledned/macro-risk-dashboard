@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 import plotly.graph_objs as go
+from sentiment.twitter_sentiment import get_sentiment_dataframe
+
 
 # Placeholder price data
 def mock_intraday_data():
@@ -71,12 +73,24 @@ def show_trading_terminal():
         st.metric("52W High", "3,042.00")
         st.metric("52W Low", "2,202.27")
 
-    # --- Twitter Sentiment ---
-    st.markdown('<div class="section-header">Twitter Sentiment Analysis</div>', unsafe_allow_html=True)
-    times = pd.date_range(end=datetime.utcnow(), periods=60)
-    sentiment = np.random.normal(0, 0.5, 60).cumsum()
-    st.line_chart(pd.DataFrame({"Sentiment": sentiment}, index=times))
+    # --- Real Twitter Sentiment ---
+    st.markdown('<div class="section-header">🐦 Twitter Sentiment</div>', unsafe_allow_html=True)
 
+    try:
+        sentiment_df = get_sentiment_dataframe("SPY")
+
+        avg_sentiment = sentiment_df["score"].mean()
+        st.metric("Average Sentiment", f"{avg_sentiment:+.2f}")
+
+        st.line_chart(sentiment_df.set_index("timestamp")["score"])
+
+        st.markdown("### Recent Tweets")
+        for _, row in sentiment_df.head(5).iterrows():
+            emoji = "🟢" if row["score"] > 0.2 else "🔴" if row["score"] < -0.2 else "⚪"
+            st.write(f"{emoji} {row['text']}")
+
+    except Exception as e:
+        st.error(f"Could not load sentiment: {e}")
     # --- Buy Confidence Gauge Placeholder ---
     st.markdown('<div class="section-header">Buy Confidence</div>', unsafe_allow_html=True)
     st.progress(0.7)
