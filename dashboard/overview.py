@@ -54,8 +54,11 @@ def show_main_dashboard():
         st.markdown("### 🔍 Key Market Metrics")
         col1, col2, col3, col4, col5 = st.columns(5)
         col1.metric("VIX", f"{vix.iloc[-1]:.2f}", f"{vix.iloc[-1] - vix.iloc[-2]:+.2f}")
-        if spx is not None and len(spx) >= 2:
-            col2.metric("S&P 500", f"{spx.iloc[-1]:,.0f}", f"{spx.iloc[-1] - spx.iloc[-2]:+.0f}")
+        if isinstance(spx, pd.Series) and len(spx) >= 2:
+            latest_spx = float(spx.iloc[-1])
+            prior_spx = float(spx.iloc[-2])
+            delta_spx = latest_spx - prior_spx
+            col2.metric("S&P 500", f"{latest_spx:,.0f}", f"{delta_spx:+.0f}")
         else:
             col2.metric("S&P 500", "N/A", "No data")
         col3.metric("DXY", f"{dxy.iloc[-1]:.2f}", f"{dxy.iloc[-1] - dxy.iloc[-2]:+.2f}")
