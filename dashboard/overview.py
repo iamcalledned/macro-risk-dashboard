@@ -64,7 +64,12 @@ def show_main_dashboard():
             col2.metric("S&P 500", "N/A", "No data")
         col3.metric("DXY", f"{dxy.iloc[-1]:.2f}", f"{dxy.iloc[-1] - dxy.iloc[-2]:+.2f}")
         col4.metric("HY–IG", f"{hy_ig_spread:.1f} bps", f"{hy_ig_delta:.1f}")
-        col5.metric("Fed Funds", f"{fed_funds.iloc[-1]:.2f}%", f"{fed_funds.iloc[-1] - fed_funds.iloc[-2]:+.2f}%")
+        if fed_funds is not None and len(fed_funds) >= 2:
+            latest_rate = float(fed_funds.iloc[-1])
+            prev_rate = float(fed_funds.iloc[-2])
+            col5.metric("Fed Funds", f"{latest_rate:.2f}%", f"{latest_rate - prev_rate:+.2f}%")
+        else:
+            col5.metric("Fed Funds", "N/A", "No data")
 
     st.markdown("---")
 
